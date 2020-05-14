@@ -1,6 +1,7 @@
 package com.hesheng1024.spinner
 
 import android.graphics.Rect
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -48,22 +49,22 @@ internal class SpinnerAdapter<T> : BaseAdapter {
             }
             if (tvItem == null) {
                 throw RuntimeException(
-                        "Failed to find view with ID " +
-                                "${parent?.context?.resources?.getResourceName(mTvId)} in item layout"
+                    "Failed to find view with ID " +
+                            "${parent?.context?.resources?.getResourceName(mTvId)} in item layout"
                 )
             }
             if (mTextSize != -1f) {
-                tvItem.textSize = mTextSize
+                tvItem.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize)
             }
             if (mTextColor != -1) {
                 tvItem.setTextColor(mTextColor)
             }
             tvItem.gravity = mGravity
             tvItem.setPadding(
-                    mPaddingRect.left,
-                    mPaddingRect.top,
-                    mPaddingRect.right,
-                    mPaddingRect.bottom
+                mPaddingRect.left,
+                mPaddingRect.top,
+                mPaddingRect.right,
+                mPaddingRect.bottom
             )
         } else {
             contentView = (convertView.tag as ViewHolder).itemView

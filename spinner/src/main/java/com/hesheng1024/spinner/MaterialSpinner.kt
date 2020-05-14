@@ -79,35 +79,48 @@ class MaterialSpinner : AppCompatTextView {
     private fun init(context: Context, attrs: AttributeSet?) {
         val ta: TypedArray = context.obtainStyledAttributes(attrs, R.styleable.MaterialSpinner)
         val defaultColor = textColors.defaultColor
-        val entries: Array<CharSequence>
+        val entries: Array<CharSequence>?
         try {
             mPopBgResourceId = ta.getResourceId(R.styleable.MaterialSpinner_popBackground, -1)
             if (mPopBgResourceId == -1) {
                 mPopBgColor = ta.getColor(R.styleable.MaterialSpinner_popBackground, Color.WHITE)
             }
 
-            mItemGravity = ItemTextGravity.formId(ta.getInt(R.styleable.MaterialSpinner_itemGravity,
-                    ItemTextGravity.CENTER.ordinal))
+            mItemGravity = ItemTextGravity.formId(
+                ta.getInt(
+                    R.styleable.MaterialSpinner_itemGravity,
+                    ItemTextGravity.CENTER.ordinal
+                )
+            )
             mItemTextColor = ta.getColor(R.styleable.MaterialSpinner_itemTextColor, defaultColor)
-            mItemTextSize = ta.getDimensionPixelSize(R.styleable.MaterialSpinner_itemTextSize, -1).toFloat()
-            mItemPaddingL = ta.getDimensionPixelSize(R.styleable.MaterialSpinner_itemPaddingL,
-                    resources.getDimensionPixelOffset(R.dimen.ms_item_padding_l))
-            mItemPaddingT = ta.getDimensionPixelSize(R.styleable.MaterialSpinner_itemPaddingT,
-                    resources.getDimensionPixelOffset(R.dimen.ms_item_padding_t))
-            mItemPaddingR = ta.getDimensionPixelSize(R.styleable.MaterialSpinner_itemPaddingR,
-                    resources.getDimensionPixelOffset(R.dimen.ms_item_padding_r))
-            mItemPaddingB = ta.getDimensionPixelSize(R.styleable.MaterialSpinner_itemPaddingB,
-                    resources.getDimensionPixelOffset(R.dimen.ms_item_padding_b))
+            mItemTextSize = ta.getDimension(R.styleable.MaterialSpinner_itemTextSize, -1f)
+            mItemPaddingL = ta.getDimensionPixelSize(
+                R.styleable.MaterialSpinner_itemPaddingL,
+                resources.getDimensionPixelOffset(R.dimen.ms_item_padding_l)
+            )
+            mItemPaddingT = ta.getDimensionPixelSize(
+                R.styleable.MaterialSpinner_itemPaddingT,
+                resources.getDimensionPixelOffset(R.dimen.ms_item_padding_t)
+            )
+            mItemPaddingR = ta.getDimensionPixelSize(
+                R.styleable.MaterialSpinner_itemPaddingR,
+                resources.getDimensionPixelOffset(R.dimen.ms_item_padding_r)
+            )
+            mItemPaddingB = ta.getDimensionPixelSize(
+                R.styleable.MaterialSpinner_itemPaddingB,
+                resources.getDimensionPixelOffset(R.dimen.ms_item_padding_b)
+            )
 
             entries = ta.getTextArray(R.styleable.MaterialSpinner_entries)
             mHintStr = ta.getString(R.styleable.MaterialSpinner_hint).toString()
             mArrowColor = ta.getColor(R.styleable.MaterialSpinner_arrowHint, defaultColor)
             mHideArrow = ta.getBoolean(R.styleable.MaterialSpinner_hideArrow, false)
 
-            mPopWindowMaxH = ta.getDimensionPixelSize(R.styleable.MaterialSpinner_ms_dropdown_max_height, 0)
+            mPopWindowMaxH =
+                ta.getDimensionPixelSize(R.styleable.MaterialSpinner_ms_dropdown_max_height, 0)
             mPopWindowH = ta.getLayoutDimension(
-                    R.styleable.MaterialSpinner_ms_dropdown_height,
-                    WindowManager.LayoutParams.WRAP_CONTENT
+                R.styleable.MaterialSpinner_ms_dropdown_height,
+                WindowManager.LayoutParams.WRAP_CONTENT
             )
             mArrowColorDisabled = lighter(mArrowColor, 0.8f)
         } finally {
@@ -137,7 +150,9 @@ class MaterialSpinner : AppCompatTextView {
 
         initArrow()
         initPopWindow()
-        setItems(entries.toList())
+        entries?.let {
+            setItems(entries.toList())
+        }
     }
 
     private fun initArrow() {
@@ -152,10 +167,10 @@ class MaterialSpinner : AppCompatTextView {
                 drawables[2] = mArrowDrawable
             }
             setCompoundDrawablesWithIntrinsicBounds(
-                    drawables[0],
-                    drawables[1],
-                    drawables[2],
-                    drawables[3]
+                drawables[0],
+                drawables[1],
+                drawables[2],
+                drawables[3]
             )
         }
     }
@@ -175,9 +190,19 @@ class MaterialSpinner : AppCompatTextView {
             }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mPopupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.ms_drawable))
+            mPopupWindow.setBackgroundDrawable(
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.ms_drawable
+                )
+            )
         } else {
-            mPopupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.ms__drop_down_shadow))
+            mPopupWindow.setBackgroundDrawable(
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.ms__drop_down_shadow
+                )
+            )
         }
         if (mPopBgColor != Color.WHITE) { // default color is white
             mPopupWindow.background?.setColorFilter(mPopBgColor, PorterDuff.Mode.SRC_IN)
@@ -262,7 +287,10 @@ class MaterialSpinner : AppCompatTextView {
 
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
-        mArrowDrawable?.setColorFilter(if (enabled) mArrowColor else mArrowColorDisabled, PorterDuff.Mode.SRC_IN)
+        mArrowDrawable?.setColorFilter(
+            if (enabled) mArrowColor else mArrowColorDisabled,
+            PorterDuff.Mode.SRC_IN
+        )
     }
 
     /**
