@@ -60,12 +60,14 @@ internal class SpinnerAdapter<T> : BaseAdapter {
                 tvItem.setTextColor(mTextColor)
             }
             tvItem.gravity = mGravity
-            tvItem.setPadding(
-                mPaddingRect.left,
-                mPaddingRect.top,
-                mPaddingRect.right,
-                mPaddingRect.bottom
-            )
+            if (mPaddingRect.width() != 0 || mPaddingRect.height() != 0) {
+                tvItem.setPadding(
+                    mPaddingRect.left,
+                    mPaddingRect.top,
+                    mPaddingRect.right,
+                    mPaddingRect.bottom
+                )
+            }
         } else {
             contentView = (convertView.tag as ViewHolder).itemView
             tvItem = if (contentView is TextView) {

@@ -87,29 +87,14 @@ class MaterialSpinner : AppCompatTextView {
             }
 
             mItemGravity = ItemTextGravity.formId(
-                ta.getInt(
-                    R.styleable.MaterialSpinner_itemGravity,
-                    ItemTextGravity.CENTER.ordinal
-                )
+                    ta.getInt(R.styleable.MaterialSpinner_itemGravity, ItemTextGravity.CENTER.ordinal)
             )
             mItemTextColor = ta.getColor(R.styleable.MaterialSpinner_itemTextColor, defaultColor)
             mItemTextSize = ta.getDimension(R.styleable.MaterialSpinner_itemTextSize, -1f)
-            mItemPaddingL = ta.getDimensionPixelSize(
-                R.styleable.MaterialSpinner_itemPaddingL,
-                resources.getDimensionPixelOffset(R.dimen.ms_item_padding_l)
-            )
-            mItemPaddingT = ta.getDimensionPixelSize(
-                R.styleable.MaterialSpinner_itemPaddingT,
-                resources.getDimensionPixelOffset(R.dimen.ms_item_padding_t)
-            )
-            mItemPaddingR = ta.getDimensionPixelSize(
-                R.styleable.MaterialSpinner_itemPaddingR,
-                resources.getDimensionPixelOffset(R.dimen.ms_item_padding_r)
-            )
-            mItemPaddingB = ta.getDimensionPixelSize(
-                R.styleable.MaterialSpinner_itemPaddingB,
-                resources.getDimensionPixelOffset(R.dimen.ms_item_padding_b)
-            )
+            mItemPaddingL = ta.getDimensionPixelSize(R.styleable.MaterialSpinner_itemPaddingL, 0)
+            mItemPaddingT = ta.getDimensionPixelSize(R.styleable.MaterialSpinner_itemPaddingT, 0)
+            mItemPaddingR = ta.getDimensionPixelSize(R.styleable.MaterialSpinner_itemPaddingR, 0)
+            mItemPaddingB = ta.getDimensionPixelSize(R.styleable.MaterialSpinner_itemPaddingB, 0)
 
             entries = ta.getTextArray(R.styleable.MaterialSpinner_entries)
             mHintStr = ta.getString(R.styleable.MaterialSpinner_hint).toString()
@@ -117,27 +102,28 @@ class MaterialSpinner : AppCompatTextView {
             mHideArrow = ta.getBoolean(R.styleable.MaterialSpinner_hideArrow, false)
 
             mPopWindowMaxH =
-                ta.getDimensionPixelSize(R.styleable.MaterialSpinner_ms_dropdown_max_height, 0)
+                    ta.getDimensionPixelSize(R.styleable.MaterialSpinner_ms_dropdown_max_height, 0)
             mPopWindowH = ta.getLayoutDimension(
-                R.styleable.MaterialSpinner_ms_dropdown_height,
-                WindowManager.LayoutParams.WRAP_CONTENT
+                    R.styleable.MaterialSpinner_ms_dropdown_height,
+                    WindowManager.LayoutParams.WRAP_CONTENT
             )
             mArrowColorDisabled = lighter(mArrowColor, 0.8f)
         } finally {
             ta.recycle()
         }
 
+        isSingleLine = true
         if (gravity == (Gravity.TOP or Gravity.START)) {
             gravity = Gravity.CENTER_VERTICAL or Gravity.START
+            if (paddingStart == 0 && paddingTop == 0 && paddingEnd == 0 && paddingBottom == 0) {
+                val l = resources.getDimensionPixelSize(R.dimen.ms_text_padding_l)
+                val t = resources.getDimensionPixelSize(R.dimen.ms_text_padding_t)
+                val r = resources.getDimensionPixelSize(R.dimen.ms_text_padding_r)
+                val b = resources.getDimensionPixelSize(R.dimen.ms_text_padding_b)
+                setPadding(l, t, r, b)
+            }
         }
 
-        if (!isPaddingRelative) {
-            val l = resources.getDimensionPixelOffset(R.dimen.ms_text_padding_l)
-            val t = resources.getDimensionPixelOffset(R.dimen.ms_text_padding_t)
-            val r = resources.getDimensionPixelOffset(R.dimen.ms_text_padding_r)
-            val b = resources.getDimensionPixelOffset(R.dimen.ms_text_padding_b)
-            setPadding(l, t, r, b)
-        }
         isClickable = true
         if (background == null) {
             setBackgroundResource(R.drawable.ms_selector)
@@ -166,12 +152,7 @@ class MaterialSpinner : AppCompatTextView {
             } else {
                 drawables[2] = mArrowDrawable
             }
-            setCompoundDrawablesWithIntrinsicBounds(
-                drawables[0],
-                drawables[1],
-                drawables[2],
-                drawables[3]
-            )
+            setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], drawables[2], drawables[3])
         }
     }
 
@@ -191,17 +172,17 @@ class MaterialSpinner : AppCompatTextView {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mPopupWindow.setBackgroundDrawable(
-                ContextCompat.getDrawable(
-                    context,
-                    R.drawable.ms_drawable
-                )
+                    ContextCompat.getDrawable(
+                            context,
+                            R.drawable.ms_drawable
+                    )
             )
         } else {
             mPopupWindow.setBackgroundDrawable(
-                ContextCompat.getDrawable(
-                    context,
-                    R.drawable.ms__drop_down_shadow
-                )
+                    ContextCompat.getDrawable(
+                            context,
+                            R.drawable.ms__drop_down_shadow
+                    )
             )
         }
         if (mPopBgColor != Color.WHITE) { // default color is white
@@ -288,8 +269,8 @@ class MaterialSpinner : AppCompatTextView {
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
         mArrowDrawable?.setColorFilter(
-            if (enabled) mArrowColor else mArrowColorDisabled,
-            PorterDuff.Mode.SRC_IN
+                if (enabled) mArrowColor else mArrowColorDisabled,
+                PorterDuff.Mode.SRC_IN
         )
     }
 
@@ -362,6 +343,12 @@ class MaterialSpinner : AppCompatTextView {
             it.setTextColor(mItemTextColor)
             it.setTextSize(mItemTextSize)
             it.setGravity(mItemGravity)
+            if (mItemPaddingL == 0 && mItemPaddingT == 0 && mItemPaddingR == 0 && mItemPaddingB == 0) {
+                mItemPaddingL = resources.getDimensionPixelSize(R.dimen.ms_item_padding_l)
+                mItemPaddingT = resources.getDimensionPixelSize(R.dimen.ms_item_padding_t)
+                mItemPaddingR = resources.getDimensionPixelSize(R.dimen.ms_item_padding_r)
+                mItemPaddingB = resources.getDimensionPixelSize(R.dimen.ms_item_padding_b)
+            }
             it.setTextPadding(mItemPaddingL, mItemPaddingT, mItemPaddingR, mItemPaddingB)
             setAdapterInternal()
         }

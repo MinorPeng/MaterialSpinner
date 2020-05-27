@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="ms_text_padding_l">8dp</dimen>
-    <dimen name="ms_text_padding_t">8dp</dimen>
+    <dimen name="ms_text_padding_t">4dp</dimen>
     <dimen name="ms_text_padding_r">8dp</dimen>
-    <dimen name="ms_text_padding_b">8dp</dimen>
+    <dimen name="ms_text_padding_b">4dp</dimen>
     <dimen name="ms_pop_window_padding">4dp</dimen>
     <dimen name="ms_item_height">48dp</dimen>
     <dimen name="ms_item_padding_l">8dp</dimen>
