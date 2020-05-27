@@ -87,7 +87,7 @@ class MaterialSpinner : AppCompatTextView {
             }
 
             mItemGravity = ItemTextGravity.formId(
-                    ta.getInt(R.styleable.MaterialSpinner_itemGravity, ItemTextGravity.CENTER.ordinal)
+                ta.getInt(R.styleable.MaterialSpinner_itemGravity, ItemTextGravity.CENTER.ordinal)
             )
             mItemTextColor = ta.getColor(R.styleable.MaterialSpinner_itemTextColor, defaultColor)
             mItemTextSize = ta.getDimension(R.styleable.MaterialSpinner_itemTextSize, -1f)
@@ -102,10 +102,10 @@ class MaterialSpinner : AppCompatTextView {
             mHideArrow = ta.getBoolean(R.styleable.MaterialSpinner_hideArrow, false)
 
             mPopWindowMaxH =
-                    ta.getDimensionPixelSize(R.styleable.MaterialSpinner_ms_dropdown_max_height, 0)
+                ta.getDimensionPixelSize(R.styleable.MaterialSpinner_ms_dropdown_max_height, 0)
             mPopWindowH = ta.getLayoutDimension(
-                    R.styleable.MaterialSpinner_ms_dropdown_height,
-                    WindowManager.LayoutParams.WRAP_CONTENT
+                R.styleable.MaterialSpinner_ms_dropdown_height,
+                WindowManager.LayoutParams.WRAP_CONTENT
             )
             mArrowColorDisabled = lighter(mArrowColor, 0.8f)
         } finally {
@@ -152,7 +152,12 @@ class MaterialSpinner : AppCompatTextView {
             } else {
                 drawables[2] = mArrowDrawable
             }
-            setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], drawables[2], drawables[3])
+            setCompoundDrawablesWithIntrinsicBounds(
+                drawables[0],
+                drawables[1],
+                drawables[2],
+                drawables[3]
+            )
         }
     }
 
@@ -172,17 +177,17 @@ class MaterialSpinner : AppCompatTextView {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mPopupWindow.setBackgroundDrawable(
-                    ContextCompat.getDrawable(
-                            context,
-                            R.drawable.ms_drawable
-                    )
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.ms_drawable
+                )
             )
         } else {
             mPopupWindow.setBackgroundDrawable(
-                    ContextCompat.getDrawable(
-                            context,
-                            R.drawable.ms__drop_down_shadow
-                    )
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.ms__drop_down_shadow
+                )
             )
         }
         if (mPopBgColor != Color.WHITE) { // default color is white
@@ -269,8 +274,8 @@ class MaterialSpinner : AppCompatTextView {
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
         mArrowDrawable?.setColorFilter(
-                if (enabled) mArrowColor else mArrowColorDisabled,
-                PorterDuff.Mode.SRC_IN
+            if (enabled) mArrowColor else mArrowColorDisabled,
+            PorterDuff.Mode.SRC_IN
         )
     }
 
@@ -424,23 +429,52 @@ class MaterialSpinner : AppCompatTextView {
         mArrowDrawable?.setColorFilter(mArrowColor, PorterDuff.Mode.SRC_IN)
     }
 
+    /**
+     * drop-down items layout id
+     *
+     * @param layoutId: Layout Res
+     */
     fun setItemLayoutId(@LayoutRes layoutId: Int) {
         mItemLayoutId = layoutId
     }
 
+    /**
+     * drop-down items layout id and id for item text
+     *
+     * @param layoutId: Layout Res
+     * @param tvId: id for TextView which show item text
+     */
     fun setItemLayoutId(@LayoutRes layoutId: Int, @IdRes tvId: Int) {
         mItemLayoutId = layoutId
         mTvId = tvId
     }
 
+    /**
+     * item text color
+     *
+     * @param color:
+     */
     fun setItemTextColor(@ColorInt color: Int) {
         mItemTextColor = color
     }
 
+    /**
+     * item text size
+     *
+     * @param size: pixel size, not dp or sp
+     */
     fun setItemTextSize(size: Float) {
         mItemTextSize = size
     }
 
+    /**
+     * set padding of item text for every line
+     *
+     * @param l: padding left
+     * @param t: padding top
+     * @param r: padding right
+     * @param b: padding bottom
+     */
     fun setItemPadding(l: Int, t: Int, r: Int, b: Int) {
         mItemPaddingL = l
         mItemPaddingT = t
@@ -448,6 +482,11 @@ class MaterialSpinner : AppCompatTextView {
         mItemPaddingB = b
     }
 
+    /**
+     * set gravity of item text
+     *
+     * @param gravity: {@link ItemTextGravity}, also same of View.Gravity
+     */
     fun setItemGravity(gravity: Int) {
         mItemGravity = gravity
     }
